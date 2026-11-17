@@ -1,0 +1,25 @@
+name: "Windows Build (amg)"
+
+# Fork tonimg87/handy_amg: compila solo Windows x64, sin firmar.
+# El instalador queda como artefacto descargable del run (30 días).
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    permissions:
+      contents: write
+    uses: ./.github/workflows/build.yml
+    with:
+      platform: "windows-latest"
+      target: "x86_64-pc-windows-msvc"
+      build-args: ""
+      asset-prefix: "handy-amg"
+      upload-artifacts: true
+      sign-binaries: false
+    secrets: inherit
