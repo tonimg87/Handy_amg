@@ -688,6 +688,34 @@
         "cancel": "Отказ",
         "selectToEdit": "Изберете подкана по-горе, за да видите и редактирате подробностите ѝ.",
         "createFirst": "Натиснете „Нова подкана“ по-горе, за да създадете първата си подкана за постобработка."
+      },
+      "appRules": {
+        "title": "Per-App Rules",
+        "raw": "No post-processing",
+        "enabled": {
+          "title": "Use Per-App Rules",
+          "description": "The transcribe shortcut checks the app in focus when you start recording and applies its rule. The post-processing shortcut still always post-processes."
+        },
+        "default": {
+          "title": "Other Apps",
+          "description": "What to do in apps without a rule."
+        },
+        "list": {
+          "title": "Rules",
+          "description": "First matching rule wins. App is the executable name (e.g. chrome.exe); window title is optional text the title must contain (e.g. Gmail).",
+          "empty": "No rules yet.",
+          "processPlaceholder": "App (chrome.exe)",
+          "titlePlaceholder": "Title contains",
+          "add": "Add Rule",
+          "remove": "Remove rule",
+          "moveUp": "Move rule up"
+        },
+        "lastApp": {
+          "value": "Last app: {{process}} — {{title}}",
+          "none": "Dictate once to detect the app.",
+          "refresh": "Refresh last app",
+          "use": "Add rule for it"
+        }
       }
     },
     "history": {

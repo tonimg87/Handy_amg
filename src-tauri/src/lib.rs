@@ -1,4 +1,5 @@
 mod actions;
+mod app_rules;
 #[cfg(all(target_os = "macos", target_arch = "aarch64"))]
 mod apple_intelligence;
 mod audio_feedback;
@@ -719,6 +720,10 @@ pub fn run(cli_args: CliArgs) {
             shortcut::change_auto_submit_setting,
             shortcut::change_auto_submit_key_setting,
             shortcut::change_post_process_enabled_setting,
+            app_rules::change_app_rules_enabled_setting,
+            app_rules::set_app_rules,
+            app_rules::set_app_rules_default_prompt,
+            app_rules::get_last_target_app,
             shortcut::change_experimental_enabled_setting,
             shortcut::change_post_process_base_url_setting,
             shortcut::change_post_process_api_format_setting,

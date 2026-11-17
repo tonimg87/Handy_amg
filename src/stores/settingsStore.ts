@@ -3,6 +3,7 @@ import { subscribeWithSelector } from "zustand/middleware";
 import { listen } from "@tauri-apps/api/event";
 import type {
   AppSettings as Settings,
+  AppRule,
   AudioDevice,
   PostProcessApiFormat,
   ChineseScript,
@@ -166,6 +167,11 @@ const settingUpdaters: {
     commands.changePostProcessEnabledSetting(value as boolean),
   post_process_selected_prompt_id: (value) =>
     commands.setPostProcessSelectedPrompt(value as string),
+  app_rules_enabled: (value) =>
+    commands.changeAppRulesEnabledSetting(value as boolean),
+  app_rules: (value) => commands.setAppRules(value as AppRule[]),
+  app_rules_default_prompt_id: (value) =>
+    commands.setAppRulesDefaultPrompt(value as string | null),
   mute_while_recording: (value) =>
     commands.changeMuteWhileRecordingSetting(value as boolean),
   append_trailing_space: (value) =>

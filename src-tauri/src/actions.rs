@@ -460,7 +460,21 @@ pub(crate) async fn process_transcription_output(
     transcription: &str,
     post_process: bool,
 ) -> ProcessedTranscription {
-    let settings = get_settings(app);
+    process_transcription_output_with_prompt(app, transcription, post_process, None).await
+}
+
+/// Fork amg: like [`process_transcription_output`], with the prompt chosen by
+/// an app rule instead of the selected one.
+pub(crate) async fn process_transcription_output_with_prompt(
+    app: &AppHandle,
+    transcription: &str,
+    post_process: bool,
+    prompt_override: Option<String>,
+) -> ProcessedTranscription {
+    let mut settings = get_settings(app);
+    if prompt_override.is_some() {
+        settings.post_process_selected_prompt_id = prompt_override;
+    }
     let mut final_text = transcription.to_string();
     let mut post_processed_text: Option<String> = None;
     let mut post_process_prompt: Option<String> = None;
@@ -517,6 +531,8 @@ impl ShortcutAction for TranscribeAction {
     fn start(&self, app: &AppHandle, binding_id: &str, _shortcut_str: &str) {
         let start_time = Instant::now();
         debug!("TranscribeAction::start called for binding: {}", binding_id);
+        // Fork amg: remember the focused app before Handy's overlay appears.
+        crate::app_rules::capture_target();
 
         // Load model in the background
         let tm = app.state::<Arc<TranscriptionManager>>();
@@ -736,7 +752,13 @@ impl ShortcutAction for TranscribeAction {
         play_feedback_sound(app, SoundType::Stop);
 
         let binding_id = binding_id.to_string(); // Clone binding_id for the async task
-        let post_process = self.post_process;
+        let decision = crate::app_rules::decide(
+            &get_settings(app),
+            crate::app_rules::last_target().as_ref(),
+            self.post_process,
+        );
+        let post_process = decision.post_process;
+        let prompt_override = decision.prompt_override;
         let cancel_generation = rm.cancel_generation();
 
         tauri::async_runtime::spawn(async move {
@@ -839,7 +861,12 @@ impl ShortcutAction for TranscribeAction {
                                 }
                             }
                             let Some(processed) = complete_unless_cancelled(
-                                process_transcription_output(&ah, &transcription, post_process),
+                                process_transcription_output_with_prompt(
+                                    &ah,
+                                    &transcription,
+                                    post_process,
+                                    prompt_override.clone(),
+                                ),
                                 || rm.was_cancelled_since(cancel_generation),
                             )
                             .await

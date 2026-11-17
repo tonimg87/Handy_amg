@@ -248,6 +248,36 @@ async changePostProcessEnabledSetting(enabled: boolean) : Promise<Result<null, s
     else return { status: "error", error: e  as any };
 }
 },
+async changeAppRulesEnabledSetting(enabled: boolean) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("change_app_rules_enabled_setting", { enabled }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async setAppRules(rules: AppRule[]) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("set_app_rules", { rules }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async setAppRulesDefaultPrompt(id: string | null) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("set_app_rules_default_prompt", { id }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+/**
+ * The app that had focus when the last recording started.
+ */
+async getLastTargetApp() : Promise<ForegroundApp | null> {
+    return await TAURI_INVOKE("get_last_target_app");
+},
 async changeExperimentalEnabledSetting(enabled: boolean) : Promise<Result<null, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("change_experimental_enabled_setting", { enabled }) };
@@ -1185,7 +1215,46 @@ language_detection_window_secs?: number;
  * not gated on this — that follows model capability. Migrated from the old
  * `overlay_position` (position `none` → style `None`).
  */
-overlay_style?: OverlayStyle }
+overlay_style?: OverlayStyle; 
+/**
+ * Fork amg: let the plain transcribe shortcut decide per app whether to
+ * post-process (see `app_rules`).
+ */
+app_rules_enabled?: boolean; 
+/**
+ * Fork amg: per-app rules, first match wins.
+ */
+app_rules?: AppRule[]; 
+/**
+ * Fork amg: prompt for apps without a rule; `None` pastes raw.
+ */
+app_rules_default_prompt_id?: string | null }
+/**
+ * One per-app rule. The first rule that matches wins.
+ */
+export type AppRule = { id: string; 
+/**
+ * Executable name, with or without `.exe`, case-insensitive.
+ * Empty matches any app.
+ */
+process_name?: string; 
+/**
+ * Text the window title must contain, case-insensitive. Empty matches
+ * any title.
+ */
+title_contains?: string; 
+/**
+ * Prompt to post-process with; `None` pastes the raw transcription.
+ */
+prompt_id?: string | null }
+/**
+ * The app that had focus when a recording started.
+ */
+export type ForegroundApp = { 
+/**
+ * Executable file name, e.g. `chrome.exe`.
+ */
+process_name: string; window_title: string }
 export type AudioDevice = { index: string; name: string; is_default: boolean }
 export type AutoSubmitKey = "enter" | "ctrl_enter" | "cmd_enter"
 export type AutoUnavailableReason = 

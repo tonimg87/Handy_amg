@@ -688,6 +688,34 @@
         "cancel": "Annulla",
         "selectToEdit": "Scegli un prompt qui sopra per visualizzare o modificare i dettagli.",
         "createFirst": "Clicca 'Crea un nuovo prompt' qui sopra per creare il tuo primo prompt di post-elaborazione."
+      },
+      "appRules": {
+        "title": "Per-App Rules",
+        "raw": "No post-processing",
+        "enabled": {
+          "title": "Use Per-App Rules",
+          "description": "The transcribe shortcut checks the app in focus when you start recording and applies its rule. The post-processing shortcut still always post-processes."
+        },
+        "default": {
+          "title": "Other Apps",
+          "description": "What to do in apps without a rule."
+        },
+        "list": {
+          "title": "Rules",
+          "description": "First matching rule wins. App is the executable name (e.g. chrome.exe); window title is optional text the title must contain (e.g. Gmail).",
+          "empty": "No rules yet.",
+          "processPlaceholder": "App (chrome.exe)",
+          "titlePlaceholder": "Title contains",
+          "add": "Add Rule",
+          "remove": "Remove rule",
+          "moveUp": "Move rule up"
+        },
+        "lastApp": {
+          "value": "Last app: {{process}} — {{title}}",
+          "none": "Dictate once to detect the app.",
+          "refresh": "Refresh last app",
+          "use": "Add rule for it"
+        }
       }
     },
     "history": {

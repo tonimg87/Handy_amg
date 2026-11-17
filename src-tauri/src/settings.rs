@@ -1,3 +1,4 @@
+use crate::app_rules::AppRule;
 use crate::utils;
 use log::{debug, warn};
 use serde::de::{self, Visitor};
@@ -572,6 +573,16 @@ pub struct AppSettings {
     /// `overlay_position` (position `none` → style `None`).
     #[serde(default = "default_overlay_style")]
     pub overlay_style: OverlayStyle,
+    /// Fork amg: let the plain transcribe shortcut decide per app whether to
+    /// post-process (see `app_rules`).
+    #[serde(default)]
+    pub app_rules_enabled: bool,
+    /// Fork amg: per-app rules, first match wins.
+    #[serde(default)]
+    pub app_rules: Vec<AppRule>,
+    /// Fork amg: prompt for apps without a rule; `None` pastes raw.
+    #[serde(default)]
+    pub app_rules_default_prompt_id: Option<String>,
 }
 
 fn default_model() -> String {
@@ -1076,6 +1087,9 @@ pub fn get_default_settings() -> AppSettings {
         language_detection: LanguageDetectionMode::default(),
         language_detection_window_secs: default_language_detection_window_secs(),
         overlay_style: default_overlay_style(),
+        app_rules_enabled: false,
+        app_rules: Vec::new(),
+        app_rules_default_prompt_id: None,
     }
 }
 

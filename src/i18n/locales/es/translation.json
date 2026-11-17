@@ -688,6 +688,34 @@
         "cancel": "Cancelar",
         "selectToEdit": "Selecciona un prompt arriba para ver y editar sus detalles.",
         "createFirst": "Haz clic en 'Crear nuevo prompt' arriba para crear tu primer prompt de post procesamiento."
+      },
+      "appRules": {
+        "title": "Reglas por aplicación",
+        "raw": "Sin procesar",
+        "enabled": {
+          "title": "Usar reglas por aplicación",
+          "description": "El atajo de transcribir mira la app activa al empezar a grabar y aplica su regla. El atajo de post-procesado sigue procesando siempre."
+        },
+        "default": {
+          "title": "Resto de apps",
+          "description": "Qué hacer en las apps sin regla."
+        },
+        "list": {
+          "title": "Reglas",
+          "description": "Gana la primera regla que coincida. App es el nombre del ejecutable (p. ej. chrome.exe); el título es un texto opcional que debe contener la ventana (p. ej. Gmail).",
+          "empty": "Aún no hay reglas.",
+          "processPlaceholder": "App (chrome.exe)",
+          "titlePlaceholder": "Título contiene",
+          "add": "Añadir regla",
+          "remove": "Quitar regla",
+          "moveUp": "Subir regla"
+        },
+        "lastApp": {
+          "value": "Última app: {{process}} — {{title}}",
+          "none": "Dicta una vez para detectar la app.",
+          "refresh": "Actualizar última app",
+          "use": "Crear regla para ella"
+        }
       }
     },
     "history": {
